@@ -14,3 +14,4 @@ out/
 para_compartir/
 doc_assets/
 .env
+**/.streamlit/secrets.toml
