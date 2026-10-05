@@ -1,0 +1,14 @@
+PASOS PARA PUBLICAR (5 min, sin git):
+1. Entra a https://github.com/NICOLAEATS/PROYECTO-BI-POBREZA
+2. Add file > Upload files > arrastra TODO lo de la carpeta local BI/docs/ (index.html, data/, assets/, README.md, .nojekyll). Commit directo a main.
+   O con git:
+     cd "C:\Users\Nouch\Desktop\uac\BI"
+     git init -b main
+     git remote add origin https://github.com/NICOLAEATS/PROYECTO-BI-POBREZA.git
+     git add docs README.md 2>NUL; git add docs
+     git commit -m "Catalogo BI pobreza"
+     git push -u origin main
+3. En el repo: Settings > Pages > Build and deployment > Deploy from a branch > Branch: main + /docs > Save.
+4. Espera 1-2 min y abre: https://NICOLAEATS.github.io/PROYECTO-BI-POBREZA/
+5. Pasa ese enlace por WhatsApp. Es solo lectura (no toca tu Neon).
+NOTA: no subas claves. Esta página usa CSV, sin passwords.

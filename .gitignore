@@ -1,0 +1,16 @@
+﻿__pycache__/
+*.pyc
+*.zip
+*.rar
+*.dta
+*.sav
+*.xls
+*.xlsx
+*.csv
+!docs/data/*.csv
+enaho_faltantes/
+out_*/
+out/
+para_compartir/
+doc_assets/
+.env

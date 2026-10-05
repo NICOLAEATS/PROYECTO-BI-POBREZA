@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BI Pobreza Perú — Catálogo de Datos (ENAHO 2017-2025 + BID)</title>
+<style>
+body{font-family:Segoe UI,Arial;margin:0;background:#f4f6f9;color:#1c2733}
+header{background:#0b3d62;color:#fff;padding:28px 20px;text-align:center}
+header p{opacity:.85;margin:6px 0}
+nav{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;background:#fff;padding:10px;position:sticky;top:0;box-shadow:0 1px 4px #0002}
+nav button{border:1px solid #0b3d62;background:#fff;color:#0b3d62;border-radius:20px;padding:8px 14px;cursor:pointer}
+nav button.active,nav button:hover{background:#0b3d62;color:#fff}
+main{max-width:1100px;margin:auto;padding:18px}
+.card{background:#fff;border-radius:10px;padding:16px;margin:14px 0;box-shadow:0 1px 4px #0001}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.kpi{background:#0b3d62;color:#fff;border-radius:10px;padding:12px;text-align:center}
+.kpi b{font-size:22px;display:block}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th,td{border:1px solid #dde3ea;padding:6px;text-align:left}
+th{background:#eaf1f8;position:sticky;top:0}
+input[type=search]{width:100%;padding:8px;margin:8px 0;border:1px solid #ccd;border-radius:6px}
+img{max-width:100%;border-radius:8px}
+code{background:#eef;padding:2px 6px;border-radius:4px}
+footer{text-align:center;color:#666;padding:20px;font-size:12px}
+.hidden{display:none}
+</style>
+</head>
+<body>
+<header>
+<h1>BI Pobreza Monetaria — Perú 2017-2025</h1>
+<p>Catálogo público de datos · ENAHO (INEI) + BID · Base analítica en Neon Postgres (593 MB, 310,838 hogares)</p>
+<p>UAC · Inteligencia de Negocios · Solo lectura — para editar usa Neon Console con tu usuario</p>
+</header>
+<nav>
+<button data-t="resumen" class="active">Resumen</button>
+<button data-t="comparativo">Comparativo 2017-2025</button>
+<button data-t="tasa">Tasa por departamento</button>
+<button data-t="bid">Serie BID</button>
+<button data-t="tablas">Tablas en Neon</button>
+<button data-t="conectar">Cómo conectar</button>
+</nav>
+<main>
+<section id="resumen" class="card">
+<h2>Resumen</h2>
+<div class="kpis">
+<div class="kpi"><b>310,838</b>hogares (9 años)</div>
+<div class="kpi"><b>27.58%</b>pobreza 2024 (INEI)</div>
+<div class="kpi"><b>30.13%</b>pico 2020 COVID</div>
+<div class="kpi"><b>593 MB</b>en Neon</div>
+<div class="kpi"><b>25</b>tablas (RAW + MART)</div>
+</div>
+<p><b>Capas:</b> <code>RAW</code> = todo detallado tal cual INEI (163-242 cols) para auditoría. <code>MART</code> = <code>fact_hogar_pobreza</code> (25 cols) + dimensiones + vistas para Power BI. Tasa oficial = <code>SUM(factor07*mieperho si pobre)/SUM(factor07*mieperho)</code>.</p>
+<h3>Evolución validada</h3>
+<img src="assets/chart_tasa.png" alt="Tasa pobreza">
+<h3>Muestra por año</h3>
+<img src="assets/chart_filas.png" alt="Filas">
+<h3>Tamaño en Neon</h3>
+<img src="assets/chart_storage.png" alt="Storage">
+</section>
+<section id="comparativo" class="card hidden">
+<h2>Comparativo ENAHO vs BID (nacional)</h2>
+<p>BID usa otra línea (PPP), por eso da más bajo. Sirve para contexto regional, el oficial es ENAHO.</p>
+<input type="search" id="q-comp" placeholder="Filtrar...">
+<table id="tbl-comp"></table>
+</section>
+<section id="tasa" class="card hidden">
+<h2>Tasa ponderada por año · departamento · dominio (1,921 filas)</h2>
+<input type="search" id="q-tasa" placeholder="Buscar ej: Cusco, 2024, Selva...">
+<p style="font-size:12px;color:#555">Mostrando primeras 300 filas que coincidan. Descarga completa en <code>data/tasa.csv</code>.</p>
+<table id="tbl-tasa"></table>
+</section>
+<section id="bid" class="card hidden">
+<h2>Serie BID Perú (área Total/urban/rural)</h2>
+<input type="search" id="q-bid" placeholder="Filtrar ej: 2023, rural...">
+<table id="tbl-bid"></table>
+</section>
+<section id="tablas" class="card hidden">
+<h2>Tablas en Neon (lo mismo que ves en Console)</h2>
+<table>
+<tr><th>Tabla</th><th>Filas</th><th>Cols</th><th>Uso</th></tr>
+<tr><td>raw_sumaria_anual_2017..2025</td><td>33-37k c/u</td><td>158-187</td><td>Detalle anual completo</td></tr>
+<tr><td>raw_sumaria_12g_2024</td><td>33,691</td><td>242</td><td>Gasto desagregado</td></tr>
+<tr><td>fact_hogar_pobreza</td><td>310,838</td><td>27</td><td>MART Power BI</td></tr>
+<tr><td>raw_bid_full / fact_bid_pobreza</td><td>26,575 / 1,002</td><td>25 / 10</td><td>BID detalle / agregado Total</td></tr>
+<tr><td>raw_pobreza_extrema_kaggle</td><td>2,705</td><td>3</td><td>Contexto $2.15/día</td></tr>
+<tr><td>raw_pensiones_* (5)</td><td>20-145</td><td>3-31</td><td>Anexo pensiones 2020</td></tr>
+<tr><td>dim_tiempo, departamento, dominio, estrato, condicion, pais</td><td>—</td><td>—</td><td>Dimensiones</td></tr>
+<tr><td>vw_tasa_pobreza_ponderada, vw_bid_peru_serie, vw_comparativo_enaho_bid</td><td>—</td><td>—</td><td>Vistas listas BI</td></tr>
+</table>
+<p>DOMINIO: 1 Costa Norte, 2 Costa Centro, 3 Costa Sur, 4 Sierra Norte, 5 Sierra Centro, 6 Sierra Sur, 7 Selva, 8 Lima Metropolitana. POBREZA: 1 extremo, 2 no extremo, 3 no pobre.</p>
+</section>
+<section id="conectar" class="card hidden">
+<h2>Cómo conectar (solo lectura)</h2>
+<p><b>Power BI:</b> PostgreSQL → Host <code>ep-long-sky-b4smng4m-pooler.c-6.us-east-2.aws.neon.tech:5432</code>, DB <code>neondb</code>, user <code>equipo_bi_lector</code> (pide la clave al admin). Tablas: <code>vw_tasa_pobreza_ponderada</code>.</p>
+<p><b>Neon Console:</b> pide invitación por correo (Settings → Collaborators / Project permissions → Viewer). Verás estas mismas tablas sin poder editar.</p>
+<p><b>CSV:</b> carpeta <code>data/</code> de esta página (tasa.csv, bid.csv, comparativo.csv).</p>
+</section>
+</main>
+<footer>UAC 2026 · Datos: INEI-ENAHO + BID · Generado estático para GitHub Pages (sin claves). Para tiempo real usa Neon.</footer>
+<script>
+const tabs=document.querySelectorAll("nav button");
+tabs.forEach(b=>b.onclick=()=>{tabs.forEach(x=>x.classList.remove("active"));b.classList.add("active");document.querySelectorAll("main section").forEach(s=>s.classList.add("hidden"));document.getElementById(b.dataset.t).classList.remove("hidden")});
+async function loadCSV(path){const r=await fetch(path);const t=await r.text();const lines=t.trim().split("\n");const head=lines[0].split(",");const rows=lines.slice(1).map(l=>l.split(","));return{head,rows}}
+function render(tbl,head,rows,limit=300){tbl.innerHTML="<tr>"+head.map(h=>"<th>"+h+"</th>").join("")+"</tr>"+rows.slice(0,limit).map(r=>"<tr>"+r.map(c=>"<td>"+c+"</td>").join("")+"</tr>").join("")}
+function wire(qid,tid,data){const q=document.getElementById(qid),t=document.getElementById(tid);function draw(){const f=q.value.toLowerCase();const rows=data.rows.filter(r=>r.join(" ").toLowerCase().includes(f));render(t,data.head,rows)}q.oninput=draw;draw()}
+Promise.all([loadCSV("data/comparativo.csv"),loadCSV("data/tasa.csv"),loadCSV("data/bid.csv")]).then(([c,t,b])=>{render(document.getElementById("tbl-comp"),c.head,c.rows,100);render(document.getElementById("tbl-tasa"),t.head,t.rows,300);render(document.getElementById("tbl-bid"),b.head,b.rows,200);wire("q-comp","tbl-comp",c);wire("q-tasa","tbl-tasa",t);wire("q-bid","tbl-bid",b)});
+</script>
+</body>
+</html>

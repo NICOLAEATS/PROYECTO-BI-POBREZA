@@ -1,0 +1,6 @@
+campo,descripcion
+UBIGEO,"DDPPDD, departamento = LEFT(ubigeo,2)"
+DOMINIO,"1 Costa Norte, 2 Costa Centro, 3 Costa Sur, 4 Sierra Norte, 5 Sierra Centro, 6 Sierra Sur, 7 Selva, 8 Lima Metropolitana"
+ESTRATO,"1:500k+ habitantes, 2:100-499k, 3:50-99k, 4:20-49k, 5:2-19k, 6:500-1999, 7:AER Compuesto, 8:AER Simple"
+POBREZA,"1 Pobre extremo, 2 Pobre no extremo, 3 No pobre"
+FACTOR07,Factor expansion INEI. Tasa oficial = SUM(factor07*mieperho si pobre)/SUM(factor07*mieperho)
