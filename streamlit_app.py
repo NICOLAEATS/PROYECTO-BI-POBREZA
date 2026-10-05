@@ -2,9 +2,8 @@ import streamlit as st
 import pandas as pd
 from sqlalchemy import create_engine, text
 
-st.set_page_config(page_title="BI Pobreza Perú — Base en vivo", layout="wide")
-st.title("BI Pobreza Perú — Explorador de la base completa (Neon, tiempo real)")
-st.caption("ENAHO 2017-2025 (310,838 hogares) + BID + Pensiones · Solo lectura · Sin cuentas: entra con el enlace")
+st.set_page_config(page_title="bi probreza peru", layout="wide")
+st.title("bi probreza peru")
 
 TABLES = {
  "fact_hogar_pobreza (MART, 310k)": "fact_hogar_pobreza",
@@ -62,11 +61,3 @@ try:
     st.download_button("Descargar esta página (CSV)", df.to_csv(index=False), f"{tbl}_p{page}.csv")
 except Exception as e:
     st.error(f"No se pudo leer: {e}. Revisa los Secrets en Streamlit Cloud.")
-st.divider()
-st.subheader("Tasa oficial 2017-2025 (validada INEI)")
-try:
-    t = q("SELECT anio, ROUND((SUM(CASE WHEN pobreza_id IN (1,2) THEN factor07*mieperho ELSE 0 END)/SUM(factor07*mieperho)*100)::numeric,2) AS tasa FROM fact_hogar_pobreza GROUP BY 1 ORDER BY 1")
-    st.line_chart(t.set_index("anio"))
-    st.dataframe(t, use_container_width=True)
-except Exception as e:
-    st.warning(f"Gráfico no disponible: {e}")
