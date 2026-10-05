@@ -38,7 +38,7 @@ TABLES = {
 @st.cache_resource
 def engine():
     cfg = st.secrets["neon"]
-    url = f"postgresql://{cfg['user']}:{cfg['password']}@{cfg['host']}:{cfg.get('port',5432)}/{cfg['database']}?sslmode=require&channel_binding=require"
+    url = f"postgresql+psycopg2://{cfg['user']}:{cfg['password']}@{cfg['host']}:{cfg.get('port',5432)}/{cfg['database']}?sslmode=require&channel_binding=require"
     return create_engine(url, pool_pre_ping=True)
 
 def q(sql, params=None):
