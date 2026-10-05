@@ -55,7 +55,7 @@ if anio.strip() and tbl in ("fact_hogar_pobreza",) or (anio.strip() and "raw_sum
     where = "WHERE anio = :a"; params = {"a": int(anio.strip())}
 try:
     total = q(f'SELECT COUNT(*) AS n FROM "{tbl}" {where}', params).iloc[0]["n"]
-    st.write(f"**{tbl}**: {int(total):,} filas · página {page} ({per} por página) · todo visible, nada escondido")
+    st.write(f"**{tbl}**: {int(total):,} filas · página {page} ({per} por página)")
     df = q(f'SELECT * FROM "{tbl}" {where} LIMIT :l OFFSET :o', {**params, "l": int(per), "o": int((page-1)*int(per))})
     st.dataframe(df, use_container_width=True)
     st.download_button("Descargar esta página (CSV)", df.to_csv(index=False), f"{tbl}_p{page}.csv")
